@@ -1,7 +1,4 @@
 import random
-import sys
-
-sys.setrecursionlimit(1000)
 
 class QuickSort:
     @staticmethod
@@ -41,6 +38,10 @@ class QuickSort:
             arr ((Comparable) objects array): The array we wish to sort from start to end indexes.
             start (int, optional): Start index of subarray. Defaults to 0.
             end ([type], optional): End index of subarray. Defaults to len(arr) - 1.
+            
+        Time Complexity:
+            Worst Case: O(n^2) -> Because We're always taking the first element as the pivot and not the median.
+            Average Case: O(nlog(n))
         """
         if end == None:
             end = len(arr) - 1
