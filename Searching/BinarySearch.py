@@ -4,8 +4,8 @@ class BinarySearch:
         """Given a sorted array, find element x and return its index using the Binary Search algorithm.
 
         Args:
-            arr ((Comparable) Object Array): The array where we search for the index of the wanted element.
-            x (Wanted Elemenet): The wanted element.
+            arr ((Comparable) Object Array): A sorted array containing comparable objects.
+            x (Wanted Elemenet): An object the can be compared with arr's elements.
 
         Returns:
             Int: Returns the index of the wanted element. If it's not in the array, returns -1.
@@ -27,8 +27,8 @@ class BinarySearch:
         """Given a sorted array, find element x and return its index using a recursive version of the Binary Search algorithm.
 
         Args:
-            arr ((Comparable) Object Array): The array where we search for the index of the wanted element.
-            x (Wanted Elemenet): The wanted element.
+            arr ((Comparable) Object Array): A sorted array containing comparable objects.
+            x (Wanted Elemenet): An object the can be compared with arr's elements.
 
         Returns:
             Int: Returns the index of the wanted element. If it's not in the array, returns -1.
