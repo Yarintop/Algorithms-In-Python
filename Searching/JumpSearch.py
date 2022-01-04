@@ -12,6 +12,10 @@ class JumpSearch:
 
         Returns:
             Int: Returns the index of the wanted element. If it's not in the array, returns -1.
+            
+        Time Complexity:
+            It is between Linear Search (o(n)) and Binary Search (o(log(n)))
+            Worst-Case: depends on step, and is optimized at O(sqrt(n)) while step = sqrt(n).
         """
         if step == None:
             step = math.floor(math.sqrt(len(arr)))

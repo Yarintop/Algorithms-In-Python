@@ -9,6 +9,8 @@ class BinarySearch:
 
         Returns:
             Int: Returns the index of the wanted element. If it's not in the array, returns -1.
+        Time Complexity:
+            Worst-Case: O(Log(n))
         """
         lower = 0
         upper = len(arr) - 1
