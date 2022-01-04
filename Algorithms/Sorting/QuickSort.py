@@ -6,6 +6,16 @@ sys.setrecursionlimit(1000)
 class QuickSort:
     @staticmethod
     def partition(arr, start, end):
+        """Partitions the array from start to end using a pivot.
+
+        Args:
+            arr ((Comparable) objects array): The subarray we wish to sort from start to end
+            start (Int): Start integer
+            end (Int): End integer
+
+        Returns:
+            Int: Correct index of pivot.
+        """
         pivotIndex = start
         pivot = arr[start]
         
@@ -25,6 +35,13 @@ class QuickSort:
         
     @staticmethod
     def quickSort(arr, start=0, end=None):
+        """Sort an array using the Quick Sort algorithm.
+
+        Args:
+            arr ((Comparable) objects array): The array we wish to sort from start to end indexes.
+            start (int, optional): Start index of subarray. Defaults to 0.
+            end ([type], optional): End index of subarray. Defaults to len(arr) - 1.
+        """
         if end == None:
             end = len(arr) - 1
         
