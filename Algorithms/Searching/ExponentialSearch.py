@@ -1,4 +1,4 @@
-from BinarySearch import BinarySearch
+from Algorithms.Searching.BinarySearch import BinarySearch
 
 # Exponential Search algorithm uses the Binary Search algorithm as a part of it, So I'm including Binary Search.
 
@@ -27,7 +27,7 @@ class ExponentialSearch:
             i *= 2
             
         if i >= len(arr):
-            return -1
+            i = len(arr) - 1
         
         return BinarySearch.binarySearchRecursive(arr, x, i // 2, i)
     
