@@ -8,11 +8,21 @@ class CircularLinkedList:
             self.head.next = self.head
             
     def isEmpty(self) -> bool:
+        """Checks if linked list is empty.
+
+        Returns:
+            Boolean: If empty, True. Else False.
+        """
         return self.head == None
     
     # Insertion
     
     def push(self, node):
+        """Pushes a node to the start of the linked list (it's the new head).
+
+        Args:
+            node (LinkedListNode): The node we want to insert.
+        """
         t = self.head
         while t.next != self.head:
             t = t.next
@@ -22,6 +32,12 @@ class CircularLinkedList:
         
         
     def insertAt(self, node, index):
+        """Inserts a node to the wanted index of the linked list.
+
+        Args:
+            node (LinkedListNode): The node we want to insert.
+            index (Int): The index we want to insert "node" to
+        """
         if self.isEmpty():
             self.head = index
         l = len(self)
@@ -35,6 +51,11 @@ class CircularLinkedList:
         t.next = node
         
     def append(self, node):
+        """Inserts a node as the last element of the linked list.
+
+        Args:
+            node (LinkedListNode): The node we want to insert.
+        """
         t = self.head
         while t.next != self.head:
             t = t.next
@@ -44,6 +65,14 @@ class CircularLinkedList:
     # Deletion
     
     def remove(self, node):
+        """Removes the first occurence of a node in the linked list.
+
+        Args:
+            node (LinkedListNode): The node we want to remove.
+
+        Raises:
+            ValueError: node is not in the linked list.
+        """
         if self.isEmpty():
             raise ValueError("node is not in the linked list.")
         
@@ -62,6 +91,11 @@ class CircularLinkedList:
             t.next = t.next.next
         
     def removeIndex(self, index):
+        """Removes a node in the "index" position in the linked list.
+
+        Args:
+            node (LinkedListNode): The node we want to remove.
+        """
         if self.isEmpty():
             raise IndexError("List is empty, therefore every index is out of range.")
         l = len(self)
@@ -81,18 +115,42 @@ class CircularLinkedList:
     # Search
     
     def index(self, node):
+        """Returns the index of the first occurence of node in the linked list.
+
+        Args:
+            node (LinkedListNode): The node we want to find.
+
+        Returns:
+            Int: Index of "node", -1 if node is not in the linked list.
+        """
         index = 0
         t = self.head
         while t != node:
             index += 1
             t = t.next
             if t == self.head:
-                return ValueError("Node is not in list")
+                return -1
         return index
     
     def __getitem__(self, index):
+        """Returns the node in the "index" position, if index is a slice, then return a slice of nodes accordingly
+
+        Args:
+            index (Int): The index or slice we want to get.
+
+        Raises:
+            IndexError: Index is out of range.
+
+        Returns:
+            LinkedListNode: The node we want
+            
+            (Or, in case index is a Slice)
+            
+            List (LinkedListNodes): An array of LinkedListNodes according to the slice.
+        """
         if isinstance(index, slice):
             return [self[ii] for ii in range(*index.indices(len(self)))]
+        index = index % len(self)
         if self.isEmpty():
             raise IndexError('Index is out of range')
         p = self.head
