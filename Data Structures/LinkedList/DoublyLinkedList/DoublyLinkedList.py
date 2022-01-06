@@ -1,11 +1,9 @@
-from CircularLinkedListNode import CircularLinkedListNode
+from DoublyLinkedListNode import DoublyLinkedListNode
 import random
 
-class CircularLinkedList:
+class DoublyLinkedList:
     def __init__(self, head=None) -> None:
         self.head = head
-        if head:
-            self.head.next = self.head
             
     def isEmpty(self) -> bool:
         """Checks if linked list is empty.
@@ -23,12 +21,10 @@ class CircularLinkedList:
         Args:
             node (LinkedListNode): The node we want to insert.
         """
-        t = self.head
-        while t.next != self.head:
-            t = t.next
-        t.next = node
         node.next = self.head
         self.head = node
+        if node.next:
+            node.next.prev = node
         
         
     def insertAt(self, node, index):
@@ -38,17 +34,17 @@ class CircularLinkedList:
             node (LinkedListNode): The node we want to insert.
             index (Int): The index we want to insert "node" to
         """
-        if self.isEmpty():
-            self.head = index
-        l = len(self)
-        index = index % l # To prevent useless cycles
-        if index < 0:
-            index += l
         t = self.head
         for i in range(index - 1):
+            if not t:
+                raise IndexError("Index is out of range.")
             t = t.next
+        
         node.next = t.next
         t.next = node
+        node.prev = t
+        if node.next:
+            node.next.prev = node
         
     def append(self, node):
         """Inserts a node as the last element of the linked list.
@@ -56,11 +52,14 @@ class CircularLinkedList:
         Args:
             node (LinkedListNode): The node we want to insert.
         """
-        t = self.head
-        while t.next != self.head:
-            t = t.next
-        t.next = node
-        node.next = self.head
+        if self.isEmpty():
+            self.head = node
+        else:
+            t = self.head
+            while t.next:
+                t = t.next
+            t.next = node
+            node.prev = t
         
     # Deletion
     
@@ -73,22 +72,21 @@ class CircularLinkedList:
         Raises:
             ValueError: node is not in the linked list.
         """
-        if self.isEmpty():
-            raise ValueError("node is not in the linked list.")
-        
-        if len(self) == 1 and self.head == node:
-            self.head = None
+        if node == self.head:
+            self.head = self.head.next
+            self.head.prev = None
         else:
             t = self.head
-            while t.next != node:
+            while t and t != node:
                 t = t.next
-                if t == self.head:
-                    raise ValueError("node is not in the linked list.")
                 
-            if t.next == self.head:
-                self.head = self.head.next
-                
-            t.next = t.next.next
+            if t:
+                if t.prev:
+                    t.prev.next = t.next
+                if t.next:
+                    t.next.prev = t.prev
+            else:
+                raise ValueError("Node is not in list.")
         
     def removeIndex(self, index):
         """Removes a node in the "index" position in the linked list.
@@ -96,21 +94,18 @@ class CircularLinkedList:
         Args:
             node (LinkedListNode): The node we want to remove.
         """
-        if self.isEmpty():
-            raise IndexError("List is empty, therefore every index is out of range.")
-        l = len(self)
-        index = index % l
-        if index < 0:
-            index += l
-            
-        if index == 0:
-            self.remove(self.head)
-        else:
-            t = self.head
-            for i in range(index - 1):
-                t = t.next
-                
+        t = self.head
+        for i in range(index - 1):
+            if not t:
+                raise IndexError("Index is out of range.")
+            t = t.next
+        
+        if t.next:
             t.next = t.next.next
+            if t.next.next:
+                t.next.next.prev = t
+        else:
+            raise IndexError("Index is out of range.")
             
     # Search
     
@@ -123,14 +118,15 @@ class CircularLinkedList:
         Returns:
             Int: Index of "node", -1 if node is not in the linked list.
         """
-        index = 0
         t = self.head
-        while t != node:
-            index += 1
+        index = 0
+        while t and t != node:
             t = t.next
-            if t == self.head:
-                return -1
-        return index
+            index += 1
+            
+        if t:
+            return index
+        return -1
     
     def __getitem__(self, index):
         """Returns the node in the "index" position, if index is a slice, then return a slice of nodes accordingly
@@ -150,22 +146,22 @@ class CircularLinkedList:
         """
         if isinstance(index, slice):
             return [self[i] for i in range(*index.indices(len(self)))]
-        index = index % len(self)
         if self.isEmpty():
-            raise IndexError('Index is out of range')
-        p = self.head
-        for i in range(index):
-            p = p.next
-            if not p:
-                raise IndexError('Index is out of range')
-        return p
+            raise IndexError("Index is out of range.")
+        t = self.head
+        for i in range(index - 1):
+            if not t:
+                raise IndexError("Index is out of range.")
+            t = t.next
+        
+        if t:
+            return t
+        raise IndexError("Index is out of range.")
         
     def __len__(self):
-        if self.isEmpty():
-            return 0
-        count = 1
-        t = self.head.next
-        while t and t != self.head:
+        count = 0
+        t = self.head
+        while t:
             count += 1
             t = t.next
         
@@ -175,15 +171,11 @@ class CircularLinkedList:
         if self.isEmpty():
             return "The linked list is empty."
         p = self.head
-        s = '╭'
-        while True:
-            s += f' -> {p.value} -> '
+        s = ''
+        while p:
+            s += f'{p.value} -> '
             p = p.next
-            if p == self.head:
-                break
-        s += '╮'
-        l = len(s)
-        s += f'\n╰{"-" * (l - 2)}╯'
+        s = s[:-4]
         return s
             
 if __name__ == "__main__":
@@ -192,18 +184,18 @@ if __name__ == "__main__":
     
     print("Initialize linked")
     
-    linked = CircularLinkedList(CircularLinkedListNode(123))
+    linked = DoublyLinkedList(DoublyLinkedListNode(123))
     for i in range(10):
-        linked.append(CircularLinkedListNode(random.randint(-20, 20)))
+        linked.append(DoublyLinkedListNode(random.randint(-20, 20)))
     print(linked)
     
-    # Insertion
+    # # Insertion
     
     print("Insertion")
     
-    a = CircularLinkedListNode(50)
-    b = CircularLinkedListNode(30)
-    c = CircularLinkedListNode(100)
+    a = DoublyLinkedListNode(50)
+    b = DoublyLinkedListNode(30)
+    c = DoublyLinkedListNode(100)
     
     linked.append(a)
     print(linked)
@@ -212,7 +204,7 @@ if __name__ == "__main__":
     linked.insertAt(c, len(linked) // 2)
     print(linked)
     
-    # Deletion
+    # # Deletion
     
     print("Deletion")
     
@@ -225,16 +217,14 @@ if __name__ == "__main__":
     linked.removeIndex(0)
     print(linked)
     
-    # # Search
+    # # # Search
     
     print(linked.index(a))
     print(linked.index(b))
     print(linked.index(c))
     print(linked[4].value)
     
-    print([x.value for x in linked[-7:8]])
-    
-    # print(linked2.loopLength())
+    # print([x.value for x in linked[-7:8]])
     
     # # print(any(x.value == 100 for x in linked))
         
