@@ -1,31 +1,33 @@
-from StackNode import StackNode
+from QueueNode import QueueNode
 import random
 
-class Stack:
+class Queue:
     def __init__(self, head=None) -> None:
         self.head = head
+        self.tail = head
         
     def isEmpty(self):
         return self.head == None
     
     # Insertion
     
-    def push(self, node):
-        """Pushes node to the first poisition of the stack (LIFO).
+    def enqueue(self, node):
+        """Pushes node to the last poisition of the queue (FIFO).
 
         Args:
             node (StackNode): The node we're inserting.
         """
         if self.isEmpty():
             self.head = node
+            self.tail = node
         else:
-            node.next = self.head
-            self.head = node
+            self.tail.prev = node
+            self.tail = node
             
     # Deletion
     
-    def pop(self):
-        """Taking out the first node from the stack and returning it.
+    def dequeue(self):
+        """Taking out the first node from the queue and returning it.
 
         Returns:
             node (StackNode): The node we're returning.
@@ -33,11 +35,11 @@ class Stack:
         if self.isEmpty():
             return None
         t = self.head
-        self.head = self.head.next
+        self.head = self.head.prev
         return t.value
     
     def peek(self):
-        """Return the first node from the stack without taking it out.
+        """Return the first node from the queue without taking it out.
 
         Returns:
             node (StackNode): The node we're returning.
@@ -50,28 +52,28 @@ class Stack:
         p = self.head
         s = ''
         while p:
-            s += f'{p.value} -> '
-            p = p.next
+            s = f'{p.value} -> ' + s
+            p = p.prev
         s = s[:-4]
         return s
     
 if __name__ == "__main__":
     print('Initialize Stack')
-    stack = Stack()
+    stack = Queue()
     for i in range(10):
-        stack.push(StackNode(random.randint(-20, 20)))
+        stack.enqueue(QueueNode(random.randint(-20, 20)))
     print(stack)
     
     # Insertion
     
     print("Insertion")
     
-    a = StackNode(50)
-    b = StackNode(30)
+    a = QueueNode(50)
+    b = QueueNode(30)
     
-    stack.push(a)
+    stack.enqueue(a)
     print(stack)
-    stack.push(b)
+    stack.enqueue(b)
     print(stack)
     
     # Deletion
@@ -79,8 +81,8 @@ if __name__ == "__main__":
     print("Deletion")
     
     print(stack)
-    print(stack.pop())
+    print(stack.dequeue())
     print(stack)
-    print(stack.pop())
+    print(stack.dequeue())
     print(stack)
-    print(stack.pop())
+    print(stack.dequeue())
