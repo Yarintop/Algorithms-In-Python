@@ -47,8 +47,9 @@ class RabinKarp:
                 t = (d * (t - ord(text[i]) * h) + ord(text[i + m])) % q
                 if t < 0:
                     t += q
-                    
-        return indexes
+        if indexes:
+            return indexes
+        return -1
 
 if __name__ == "__main__":
     text = """According to all known laws

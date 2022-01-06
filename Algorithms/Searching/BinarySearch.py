@@ -49,12 +49,15 @@ class BinarySearch:
         return -1
     
 if __name__ == "__main__":
-    arr = [1, 4, 7, 8, 9, 12, 23, 450, 6048]
-    print(BinarySearch.binarySearch(arr, 1))
-    print(BinarySearch.binarySearch(arr, 8))
-    print(BinarySearch.binarySearch(arr, 6048))
-    print(BinarySearch.binarySearchRecursive(arr, 1))
-    print(BinarySearch.binarySearchRecursive(arr, 8))
-    print(BinarySearch.binarySearchRecursive(arr, 6048))
-    print(BinarySearch.binarySearchRecursive(arr, 6050))
+    # arr = [1, 4, 7, 8, 9, 12, 23, 450, 6048]
+    # print(BinarySearch.binarySearch(arr, 1))
+    # print(BinarySearch.binarySearch(arr, 8))
+    # print(BinarySearch.binarySearch(arr, 6048))
+    # print(BinarySearch.binarySearchRecursive(arr, 1))
+    # print(BinarySearch.binarySearchRecursive(arr, 8))
+    # print(BinarySearch.binarySearchRecursive(arr, 6048))
+    # print(BinarySearch.binarySearchRecursive(arr, 6050))
+    
+    arr = [-98, -93, -73, -12, -4, 9, 10, 17, 18, 25, 33, 54, 57, 58, 58, 67, 75, 79, 91, 94]
+    print(BinarySearch.binarySearch(arr, arr[2 * len(arr) // 3]))
     

@@ -23,9 +23,9 @@ class NaivePatternSearching:
                     break
             if flag:
                 indexes.append(i)
-        if len(indexes) == 0:
-            return -1
-        return indexes
+        if indexes:
+            return indexes
+        return -1
     
 if __name__ == "__main__":
     text = """According to all known laws
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             because bees don't care
             what humans think is impossible."""
             
-    pattern = "bee"
+    pattern = "."
     
     print(NaivePatternSearching.naivePatternSearching(text, pattern))
     

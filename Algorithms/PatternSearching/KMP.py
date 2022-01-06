@@ -31,7 +31,9 @@ class KMP:
                     j = lps[j - 1]
                 else:
                     i += 1
-        return indexes
+        if indexes:
+            return indexes
+        return -1
         
     @staticmethod
     def createLPSArray(pattern):
@@ -76,7 +78,7 @@ if __name__ == "__main__":
             because bees don't care
             what humans think is impossible."""
             
-    pattern = ""
+    pattern = "bee"
     
     print(KMP.kmp(text, pattern))
     
