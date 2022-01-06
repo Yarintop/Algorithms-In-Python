@@ -21,6 +21,8 @@ class LinearSearch:
     
 if __name__ == "__main__":
     arr = [10, 20, 80, 30, 60, 50, 110, 100, 130, 170]
+    print(LinearSearch.linearSearch(arr, 10))
     print(LinearSearch.linearSearch(arr, 110))
+    print(LinearSearch.linearSearch(arr, 170))
     print(LinearSearch.linearSearch(arr, 175))
     

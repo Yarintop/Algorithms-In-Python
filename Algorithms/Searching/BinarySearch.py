@@ -9,6 +9,7 @@ class BinarySearch:
 
         Returns:
             Int: Returns the index of the wanted element. If it's not in the array, returns -1.
+            
         Time Complexity:
             Worst-Case: O(Log(n))
         """
@@ -49,5 +50,11 @@ class BinarySearch:
     
 if __name__ == "__main__":
     arr = [1, 4, 7, 8, 9, 12, 23, 450, 6048]
+    print(BinarySearch.binarySearch(arr, 1))
     print(BinarySearch.binarySearch(arr, 8))
+    print(BinarySearch.binarySearch(arr, 6048))
+    print(BinarySearch.binarySearchRecursive(arr, 1))
     print(BinarySearch.binarySearchRecursive(arr, 8))
+    print(BinarySearch.binarySearchRecursive(arr, 6048))
+    print(BinarySearch.binarySearchRecursive(arr, 6050))
+    
