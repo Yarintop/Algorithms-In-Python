@@ -2,50 +2,78 @@ from AdjacencyMatrixGraphNode import AdjacencyMatrixGraphNode
 
 class AdjacencyMatrixGraph:
     def __init__(self) -> None:
-        self._matrix = []
-        self._nodes = []
+        self.matrix = []
+        self.nodes = []
 
     def adjacent(self, nodeA, nodeB):
         i = nodeA.index
         j = nodeB.index
-        return self._matrix[i][j] or self._matrix[j][i]
+        if self.matrix[i][j] or self.matrix[j][i]:
+            return True
+        return False
 
     def neighbors(self, node):
         neighbors = []
         i = node.index
-        for j in range(len(self._matrix[i])):
-            if self._matrix[i][j]:
-                neighbors.append(self._nodes[j])
+        for j in range(len(self.matrix[i])):
+            if self.matrix[i][j]:
+                neighbors.append(self.nodes[j])
+        return neighbors
 
     def addNode(self, node):
-        for i in range(len(self._nodes)):
-            self._matrix[i].append(0)
+        if node not in self.nodes:
+            for i in range(len(self.nodes)):
+                self.matrix[i].append(0)
             
-        if node not in self._nodes:
-            self._matrix.append([0] * (len(self._matrix) + 1))
-            self._nodes.append(node)
+            node.index = len(self.matrix)
+            self.matrix.append([0] * (len(self.matrix) + 1))
+            self.nodes.append(node)
 
     def removeNode(self, node):
-        for i in range(len(self._nodes)):
-            self._matrix[i].pop(node.index)
+        for i in range(len(self.nodes)):
+            self.matrix[i].pop(node.index)
             
-        self._matrix.pop(node.index)
-        self._nodes.remove(node)
-        for n in self._nodes[node.index + 1:]:
+        self.matrix.pop(node.index)
+        self.nodes.remove(node)
+        for n in self.nodes[node.index:]:
             n.index -= 1
             
 
     def addEdge(self, nodeA, nodeB, directional=False):
-        self._matrix[nodeA.index][nodeB.index] = 1
+        self.matrix[nodeA.index][nodeB.index] = 1
         if not directional:
-            self._matrix[nodeB.index][nodeA.index] = 1
+            self.matrix[nodeB.index][nodeA.index] = 1
             
     def removeEdge(self, nodeA, nodeB, directional=False):
-        self._matrix[nodeA.index][nodeB.index] = 0
+        self.matrix[nodeA.index][nodeB.index] = 0
         if not directional:
-            self._matrix[nodeB.index][nodeA.index] = 0
+            self.matrix[nodeB.index][nodeA.index] = 0
         
 
 if __name__ == "__main__":
     graph = AdjacencyMatrixGraph()
     
+    a = AdjacencyMatrixGraphNode(5)
+    b = AdjacencyMatrixGraphNode(20)
+    c = AdjacencyMatrixGraphNode(15)
+    d = AdjacencyMatrixGraphNode(9)
+    
+    graph.addNode(a)
+    graph.addNode(b)
+    graph.addNode(c)
+    graph.addNode(d)
+    
+    print(graph.nodes)
+    
+    graph.addEdge(a, b)
+    graph.addEdge(b, d)
+    graph.addEdge(b, c)
+    
+    print(graph.adjacent(b, a))
+    print(graph.adjacent(c, d))
+    
+    graph.removeNode(a)
+    
+    print(graph.nodes)
+
+    print(graph.neighbors(b))
