@@ -67,8 +67,9 @@ class FiniteAutomata:
                     if pattern[i] != pattern[state - ns + i]:
                         break
                     i += 1
-                if i == ns - 1:
-                    return ns
+                if i == ns:
+                    return ns + 1
+                i = 0
         return 0
 
     def getCharDict(text):
