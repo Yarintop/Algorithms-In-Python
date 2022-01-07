@@ -3,7 +3,10 @@ import random
 
 class LinkedList:
     def __init__(self, head=None) -> None:
-        self.head = head
+        if isinstance(head, LinkedListNode):
+            self.head = head
+        else:
+            self.head = LinkedListNode(head)
         
     def isEmpty(self):
         """Checks if linked list is empty.
@@ -15,16 +18,20 @@ class LinkedList:
         
     # Insertion
 
-    def push(self, node):
+    def push(self, data):
         """Pushes a node to the start of the linked list (it's the new head).
 
         Args:
             node (LinkedListNode): The node we want to insert.
         """
+        if isinstance(data, LinkedListNode):
+            node = data
+        else:
+            node = LinkedListNode(data)
         node.next = self.head
         self.head = node
         
-    def insertAt(self, node, index):
+    def insertAt(self, data, index):
         """Inserts a node to the wanted index of the linked list.
 
         Args:
@@ -34,8 +41,12 @@ class LinkedList:
         Raises:
             IndexError: Index is out of bounds.
         """
+        if isinstance(data, LinkedListNode):
+            node = data
+        else:
+            node = LinkedListNode(data)
         if index == 0:
-            self.push(node)
+            self.push(data)
         else:
             p = self.head
             for i in range(index - 1):
@@ -45,12 +56,16 @@ class LinkedList:
             node.next = p.next
             p.next = node
 
-    def append(self, node):
+    def append(self, data):
         """Inserts a node as the last element of the linked list.
 
         Args:
             node (LinkedListNode): The node we want to insert.
         """
+        if isinstance(data, LinkedListNode):
+            node = data
+        else:
+            node = LinkedListNode(data)
         if self.isEmpty():
             self.head = node
         else:
@@ -64,7 +79,7 @@ class LinkedList:
             
     # Deletion
             
-    def remove(self, node):
+    def remove(self, key):
         """Removes the first occurence of a node in the linked list.
 
         Args:
@@ -73,12 +88,12 @@ class LinkedList:
         Raises:
             ValueError: node is not in the linked list.
         """
-        if node == self.head:
+        if key == self.head.value:
             self.head = self.head.next
         else:
             p = self.head
             q = p.next
-            while q and q != node:
+            while q and q.value != key:
                 p = q
                 q = q.next
                 
@@ -112,7 +127,7 @@ class LinkedList:
            
     # Search
     
-    def index(self, node):
+    def index(self, data):
         """Returns the index of the first occurence of node in the linked list.
 
         Args:
@@ -123,7 +138,7 @@ class LinkedList:
         """
         p = self.head
         i = 0
-        while p and p != node:
+        while p and p.value != data:
             p = p.next
             i += 1
             
@@ -148,7 +163,7 @@ class LinkedList:
             List (LinkedListNodes): An array of LinkedListNodes according to the slice.
         """
         if isinstance(index, slice):
-            return [self[ii] for ii in range(*index.indices(len(self)))]
+            return [self[ii].value for ii in range(*index.indices(len(self)))]
         if self.isEmpty():
             raise IndexError('Index is out of range')
         p = self.head
@@ -156,7 +171,7 @@ class LinkedList:
             p = p.next
             if not p:
                 raise IndexError('Index is out of range')
-        return p
+        return p.value
     
     # Etc
     
@@ -207,7 +222,7 @@ class LinkedList:
             u = l + 1
             
         while l >= 0 and u < n:
-            if self[l].value != self[u].value:
+            if self[l] != self[u]:
                 return False
             l -= 1
             u += 1
@@ -255,18 +270,18 @@ if __name__ == "__main__":
     
     print("Initialize linked")
     
-    linked = LinkedList(LinkedListNode(123))
+    linked = LinkedList(123)
     for i in range(10):
-        linked.append(LinkedListNode(random.randint(-20, 20)))
+        linked.append(random.randint(-20, 20))
     print(linked)
     
     # Insertion
     
     print("Insertion")
     
-    a = LinkedListNode(50)
-    b = LinkedListNode(30)
-    c = LinkedListNode(100)
+    a = 50
+    b = 30
+    c = 100
     
     linked.append(a)
     print(linked)
@@ -293,7 +308,7 @@ if __name__ == "__main__":
     print(linked.index(a))
     print(linked.index(b))
     print(linked.index(c))
-    print(linked[2].value)
+    print(linked[2])
     
     a = LinkedListNode(123)
     b = LinkedListNode(20)

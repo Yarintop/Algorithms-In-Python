@@ -3,7 +3,10 @@ import random
 
 class DoublyLinkedList:
     def __init__(self, head=None) -> None:
-        self.head = head
+        if isinstance(head, DoublyLinkedListNode):
+            self.head = head
+        else:
+            self.head = DoublyLinkedListNode(head)
             
     def isEmpty(self) -> bool:
         """Checks if linked list is empty.
@@ -15,25 +18,33 @@ class DoublyLinkedList:
     
     # Insertion
     
-    def push(self, node):
+    def push(self, data):
         """Pushes a node to the start of the linked list (it's the new head).
 
         Args:
             node (LinkedListNode): The node we want to insert.
         """
+        if isinstance(data, DoublyLinkedListNode):
+            node = data
+        else:
+            node = DoublyLinkedListNode(data)
         node.next = self.head
         self.head = node
         if node.next:
             node.next.prev = node
         
         
-    def insertAt(self, node, index):
+    def insertAt(self, data, index):
         """Inserts a node to the wanted index of the linked list.
 
         Args:
             node (LinkedListNode): The node we want to insert.
             index (Int): The index we want to insert "node" to
         """
+        if isinstance(data, DoublyLinkedListNode):
+            node = data
+        else:
+            node = DoublyLinkedListNode(data)
         t = self.head
         for i in range(index - 1):
             if not t:
@@ -46,12 +57,16 @@ class DoublyLinkedList:
         if node.next:
             node.next.prev = node
         
-    def append(self, node):
+    def append(self, data):
         """Inserts a node as the last element of the linked list.
 
         Args:
             node (LinkedListNode): The node we want to insert.
         """
+        if isinstance(data, DoublyLinkedListNode):
+            node = data
+        else:
+            node = DoublyLinkedListNode(data)
         if self.isEmpty():
             self.head = node
         else:
@@ -63,7 +78,7 @@ class DoublyLinkedList:
         
     # Deletion
     
-    def remove(self, node):
+    def remove(self, data):
         """Removes the first occurence of a node in the linked list.
 
         Args:
@@ -72,12 +87,12 @@ class DoublyLinkedList:
         Raises:
             ValueError: node is not in the linked list.
         """
-        if node == self.head:
+        if data == self.head.value:
             self.head = self.head.next
             self.head.prev = None
         else:
             t = self.head
-            while t and t != node:
+            while t and t.value != data:
                 t = t.next
                 
             if t:
@@ -109,7 +124,7 @@ class DoublyLinkedList:
             
     # Search
     
-    def index(self, node):
+    def index(self, data):
         """Returns the index of the first occurence of node in the linked list.
 
         Args:
@@ -120,7 +135,7 @@ class DoublyLinkedList:
         """
         t = self.head
         index = 0
-        while t and t != node:
+        while t and t.value != data:
             t = t.next
             index += 1
             
@@ -145,17 +160,17 @@ class DoublyLinkedList:
             List (LinkedListNodes): An array of LinkedListNodes according to the slice.
         """
         if isinstance(index, slice):
-            return [self[i] for i in range(*index.indices(len(self)))]
+            return [self[i].value for i in range(*index.indices(len(self)))]
         if self.isEmpty():
             raise IndexError("Index is out of range.")
         t = self.head
-        for i in range(index - 1):
+        for i in range(index):
             if not t:
                 raise IndexError("Index is out of range.")
             t = t.next
         
         if t:
-            return t
+            return t.value
         raise IndexError("Index is out of range.")
         
     def __len__(self):
@@ -180,22 +195,20 @@ class DoublyLinkedList:
             
 if __name__ == "__main__":
         
-    # Initialize linked
-    
     print("Initialize linked")
     
-    linked = DoublyLinkedList(DoublyLinkedListNode(123))
+    linked = DoublyLinkedList(123)
     for i in range(10):
-        linked.append(DoublyLinkedListNode(random.randint(-20, 20)))
+        linked.append(random.randint(-20, 20))
     print(linked)
     
-    # # Insertion
+    # Insertion
     
     print("Insertion")
     
-    a = DoublyLinkedListNode(50)
-    b = DoublyLinkedListNode(30)
-    c = DoublyLinkedListNode(100)
+    a = 50
+    b = 30
+    c = 100
     
     linked.append(a)
     print(linked)
@@ -204,7 +217,7 @@ if __name__ == "__main__":
     linked.insertAt(c, len(linked) // 2)
     print(linked)
     
-    # # Deletion
+    # Deletion
     
     print("Deletion")
     
@@ -217,15 +230,11 @@ if __name__ == "__main__":
     linked.removeIndex(0)
     print(linked)
     
-    # # # Search
+    # Search
     
     print(linked.index(a))
     print(linked.index(b))
     print(linked.index(c))
-    print(linked[4].value)
+    print(linked[2])
     
-    # print([x.value for x in linked[-7:8]])
-    
-    # # print(any(x.value == 100 for x in linked))
-        
     

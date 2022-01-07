@@ -10,12 +10,13 @@ class Stack:
     
     # Insertion
     
-    def push(self, node):
+    def push(self, data):
         """Pushes node to the first poisition of the stack (LIFO).
 
         Args:
             node (StackNode): The node we're inserting.
         """
+        node = StackNode(data)
         if self.isEmpty():
             self.head = node
         else:
@@ -42,7 +43,7 @@ class Stack:
         Returns:
             node (StackNode): The node we're returning.
         """
-        return self.head
+        return self.head.value
     
     def __str__(self):
         if self.isEmpty():
@@ -59,15 +60,15 @@ if __name__ == "__main__":
     print('Initialize Stack')
     stack = Stack()
     for i in range(10):
-        stack.push(StackNode(random.randint(-20, 20)))
+        stack.push(random.randint(-20, 20))
     print(stack)
     
     # Insertion
     
     print("Insertion")
     
-    a = StackNode(50)
-    b = StackNode(30)
+    a = 50
+    b = 30
     
     stack.push(a)
     print(stack)
