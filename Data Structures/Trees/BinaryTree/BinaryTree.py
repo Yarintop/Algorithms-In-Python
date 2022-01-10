@@ -19,8 +19,10 @@ class BinaryTree:
             node = data
         else:
             node = BinaryTreeNode(data)
+            
         if self.isEmpty():
             self.root = node
+        
         else:
             r = self.root
             while r.left and r.right:
@@ -34,33 +36,33 @@ class BinaryTree:
             else:
                 r.right = node
                 
-    def remove(self, data, currNode=-1):
+    def remove(self, data, root=-1):
         if self.isEmpty():
             raise ValueError("Tree is empty.")
-        if currNode == -1:
-            currNode = self.root
-        if currNode == None:
+        if root == -1:
+            root = self.root
+        if root == None:
             return None
         
-        if currNode.value != data:
-            currNode.left = self.remove(data, currNode.left)
-            currNode.right = self.remove(data, currNode.right)
+        if root.value != data:
+            root.left = self.remove(data, root.left)
+            root.right = self.remove(data, root.right)
         else:
-            if not currNode.left:
-                return currNode.right
-            elif not currNode.right:
-                return currNode.left
+            if not root.left:
+                return root.right
+            elif not root.right:
+                return root.left
             
-            temp = currNode.right
+            temp = root.right
             while temp.left or temp.right:
                 if temp.right:
                     temp = temp.right
                 elif temp.left:
                     temp = temp.left
-            currNode.value = temp.value
-            currNode.right = self.remove(temp.value, currNode.right)
+            root.value = temp.value
+            root.right = self.remove(temp.value, root.right)
             
-        return currNode
+        return root
             
     def search(self, data, node=None, order=-1, parent=False):
         if node == None:
