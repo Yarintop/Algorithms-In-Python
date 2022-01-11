@@ -1,6 +1,6 @@
 
 class GeneralHeap:
-    def __init__(self, root = None, isMax=False) -> None:
+    def __init__(self, root = None, isMax=False) -> None: # This class is to show that you can use a maxHeap and a minHeap in the same class.
         self.heap = []
         if root:
             self.heap.append(root)

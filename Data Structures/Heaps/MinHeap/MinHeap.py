@@ -1,5 +1,5 @@
 class MinHeap:
-    def __init__(self, root = None) -> None:
+    def __init__(self, root = None) -> None: # Can Create a parent heap class because minHeap and maxHeap are very similar as seen in the generalHeap.
         self.heap = []
         if root:
             self.heap.append(root)
