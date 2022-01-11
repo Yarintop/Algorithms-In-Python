@@ -19,7 +19,7 @@ class HashFunctions:
     }
     
     @staticmethod
-    def djb2(arr):
+    def djb2(data):
         """
             DJBX33A (Daniel J. Bernstein, Times 33 with Addition)
 
@@ -55,24 +55,31 @@ class HashFunctions:
             I think you'll find that this does just as well as a 261 multiplier."
         """
         hash = 5381
-        for e in arr:
-            hash = ((hash << 5) + hash) + ord(e) # hash * 33 + e
+        if not isinstance(data, str):
+            hash = ((hash << 5) + hash) + data
+        else:
+            for e in data:
+                hash = ((hash << 5) + hash) + ord(e) # hash * 33 + e
                                             
         return hash
     
     @staticmethod
-    def djb2a(arr):
+    def djb2a(data):
         """
             Another version of this djb2 (now favored by bernstein) uses xor: hash(i) = hash(i - 1) * 33 ^ str[i]
-        """
+        """    
         hash = 5381
-        for e in arr:
-            hash = ((hash << 5) + hash) ^ ord(e) # hash * 33 XOR e
+        
+        if not isinstance(data, str):
+            hash = ((hash << 5) + hash) + data
+        else:
+            for e in data:
+                hash = ((hash << 5) + hash) ^ ord(e) # hash * 33 XOR e
                                             
         return hash
     
     @staticmethod
-    def sdbm(arr):
+    def sdbm(data):
         """
             this algorithm was created for sdbm (a public-domain reimplementation of ndbm) database library.
             it was found to do well in scrambling bits, causing better distribution of the keys and fewer splits.
@@ -82,13 +89,16 @@ class HashFunctions:
             this is one of the algorithms used in berkeley db (see sleepycat) and elsewhere.
         """
         hash = 0
-        for e in arr:
-            hash = (hash << 6) + (hash << 16) - hash + ord(e) # hash * 65599 + e
+        if not isinstance(data, str):
+            hash = ((hash << 5) + hash) + data
+        else:
+            for e in data:
+                hash = (hash << 6) + (hash << 16) - hash + ord(e) # hash * 65599 + e
             
         return hash
             
     @staticmethod
-    def loseLose(arr):
+    def loseLose(data):
         """
             This hash function appeared in K&R (1st ed) but at least the reader was warned:
             "This is not the best possible algorithm, but it has the merit of extreme simplicity."
@@ -97,8 +107,11 @@ class HashFunctions:
             It is now found mixed with otherwise respectable code
         """
         hash = 0
-        for e in arr:
-            hash += ord(e)
+        if not isinstance(data, str):
+            hash = ((hash << 5) + hash) + data
+        else:
+            for e in data:
+                hash += ord(e)
             
         return hash
     
@@ -142,11 +155,16 @@ class HashFunctions:
         if sizeInBits not in HashFunctions.fnvConstants:
             raise ValueError("Please choose only 32, 64, 128, 256, 512 or 1024 as a bit size.")
         fnvPrime, hash = HashFunctions.fnvConstants[sizeInBits]
-        for byte in data:
-            byte = ord(byte)
+        if not isinstance(data, str):
             hash *= fnvPrime
-            hash = hash ^ byte
+            hash = hash ^ data
             hash %= 2**(2**sizeInBits)
+        else:
+            for byte in data:
+                byte = ord(byte)
+                hash *= fnvPrime
+                hash = hash ^ byte
+                hash %= 2**(2**sizeInBits)
         
         return hash
     
@@ -157,14 +175,22 @@ class HashFunctions:
             The change in order leads to slightly better avalanche characteristics.
             Source: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
         """
+        if not isinstance(data, str):
+            data = [data]
+            
         if sizeInBits not in HashFunctions.fnvConstants:
             raise ValueError("Please choose only 32, 64, 128, 256, 512 or 1024 as a bit size.")
         fnvPrime, hash = HashFunctions.fnvConstants[sizeInBits]
-        for byte in data:
-            byte = ord(byte)
-            hash = hash ^ byte
+        if not isinstance(data, str):
+            hash = hash ^ data
             hash *= fnvPrime
             hash %= 2**(2**sizeInBits)
+        else:
+            for byte in data:
+                byte = ord(byte)
+                hash = hash ^ byte
+                hash *= fnvPrime
+                hash %= 2**(2**sizeInBits)
         
         return hash
 
