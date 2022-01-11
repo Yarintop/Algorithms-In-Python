@@ -1,11 +1,23 @@
 # Sources: http://www.cse.yorku.ca/~oz/hash.html
 
+from Algorithms.PrimalityTest.MillerRabin import MillerRabin
+
 class HashFunctions:
     """
         Although Python can be faster with multiplications than bitwise,
         according to https://stackoverflow.com/questions/37053379/times-two-faster-than-bit-shift-for-python-3-x-integers,
         I've decided to write the algorithms using bitwise operations.
     """
+    
+    fnvConstants = {
+        32: [16777619, 2166136261],
+        64: [1099511628211, 14695981039346656037],
+        128: [309485009821345068724781371, 144066263297769815596495629667062367629],
+        256: [374144419156711147060143317175368453031918731002211, 100029257958052580907070968620625704837092796014241193945225284501741471925557],
+        512: [35835915874844867368919076489095108449946327955754392558399825615420669938882575126094039892345713852759, 9659303129496669498009435400716310466090418745672637896108374329434462657994582932197716438449813051892206539805784495328239340083876191928701583869517785],
+        1024: [5016456510113118655434598811035278955030765345404790744303017523831112055108147451509157692220295382716162651878526895249385292291816524375083746691371804094271873160484737966720260389217684476157468082573, 14197795064947621068722070641403218320880622795441933960878474914617582723252296732303717722150864096521202355549365628174669108571814760471015076148029755969804077320157692458563003215304957150157403644460363550505412711285966361610267868082893823963790439336411086884584107735010676915],
+    }
+    
     @staticmethod
     def djb2(arr):
         """
@@ -48,16 +60,18 @@ class HashFunctions:
                                             
         return hash
     
-    def djb2(arr):
+    @staticmethod
+    def djb2a(arr):
         """
             Another version of this djb2 (now favored by bernstein) uses xor: hash(i) = hash(i - 1) * 33 ^ str[i]
         """
         hash = 5381
         for e in arr:
-            hash = ((hash << 5) + hash) ^ ord(e) # hash * 33 + e
+            hash = ((hash << 5) + hash) ^ ord(e) # hash * 33 XOR e
                                             
         return hash
     
+    @staticmethod
     def sdbm(arr):
         """
             this algorithm was created for sdbm (a public-domain reimplementation of ndbm) database library.
@@ -73,6 +87,7 @@ class HashFunctions:
             
         return hash
             
+    @staticmethod
     def loseLose(arr):
         """
             This hash function appeared in K&R (1st ed) but at least the reader was warned:
@@ -87,15 +102,69 @@ class HashFunctions:
             
         return hash
     
-    # def fnvPrimeCalculator(sizeInBits):
-    #     for s in range(4, 12):
-    #         n = 2 ** s
-    #         t = (5 + n) // 12
-            
+    @staticmethod
+    def _fnv0(sizeInBits): # Deprecated, Only used to calculate FNV_offset_basis for fnv1.
+        """
+            https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+        """
+        hash = 0
+        data = 'chongo <Landon Curt Noll> /\\../\\' # This is the string used to get the correct offset for fnv1.
+        fnvPrime = HashFunctions._fnvPrimeCalculator(sizeInBits)
+        for byte in data:
+            byte = ord(byte)
+            hash *= fnvPrime
+            hash = hash ^ byte
+            hash %= 2**(2**sizeInBits)
+        
+        return hash
+        
+    @staticmethod
+    def _fnvPrimeCalculator(sizeInBits): # I won't use this function, I'll use the numbers in a hardcoded way.
+        """
+            Source: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+        """
+        n = 2 ** sizeInBits
+        t = (5 + n) // 12
+        for b in range(1, 2 ** 8):
+            bits = bin(b).count("1")
+            if bits != 4 and bits != 5:
+                continue
+            p = (256 ** t) + (2 ** 8) + b
+            if p % (2**40 - 2**24 - 1) > (2**24 + 2**8 + 2**7):
+                if MillerRabin.millerRabin(p):
+                    return p
     
-    # def fnv1_32
+    @staticmethod
+    def fnv_1(data, sizeInBits=64):
+        """
+            Source: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+        """
+        if sizeInBits not in HashFunctions.fnvConstants:
+            raise ValueError("Please choose only 32, 64, 128, 256, 512 or 1024 as a bit size.")
+        fnvPrime, hash = HashFunctions.fnvConstants[sizeInBits]
+        for byte in data:
+            byte = ord(byte)
+            hash *= fnvPrime
+            hash = hash ^ byte
+            hash %= 2**(2**sizeInBits)
+        
+        return hash
     
-    
+    @staticmethod
+    def fnv_1a(data, sizeInBits=64):
+        """
+            This algorithm is very similar FNV-1, we just changed the order of the multiplcation and XOR.
+            The change in order leads to slightly better avalanche characteristics.
+            Source: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+        """
+        if sizeInBits not in HashFunctions.fnvConstants:
+            raise ValueError("Please choose only 32, 64, 128, 256, 512 or 1024 as a bit size.")
+        fnvPrime, hash = HashFunctions.fnvConstants[sizeInBits]
+        for byte in data:
+            byte = ord(byte)
+            hash = hash ^ byte
+            hash *= fnvPrime
+            hash %= 2**(2**sizeInBits)
+        
+        return hash
 
-if __name__ == "__main__":
-    HashFunctions.djb2('asd')
