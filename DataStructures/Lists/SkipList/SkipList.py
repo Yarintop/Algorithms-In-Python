@@ -23,8 +23,9 @@ class SkipList:
                 
                 tempNewHead = newHeadLevel
                 tempHead = tempHead.nextLevel
-            newHead.nextNodeWidth = len(self)
+            tempNewHead.nextNodeWidth = 1
             self.head = newHead
+            newHead.nextNodeWidth = len(self)
         else:
             levelNodes = []
             currNode = self.head
@@ -76,10 +77,49 @@ class SkipList:
             lastNode = levelNodes.pop(0)
             lastNode.nextNodeWidth += 1
             
-    # def remove(self, data):
-    #     if self.isEmpty():
-    #         return
-    #     #TODO
+    def remove(self, data):
+        if self.isEmpty():
+            return
+        elif data == self.head.value:
+            if len(self) == 1:
+                self.head = None
+            else:
+                currHead = self.head
+                while currHead.next == None or currHead.nextNodeWidth != 1:
+                    currHead = currHead.nextLevel
+                newData = currHead.next.value
+                self.remove(newData)
+                currHead = self.head
+                while currHead != None:
+                    currHead.value = newData
+                    currHead = currHead.nextLevel
+        else:
+            head = self.head
+            while head:
+                while head.next and head.next.value < data:
+                    head = head.next
+                if head.next:
+                    head.nextNodeWidth += head.next.nextNodeWidth - 1
+                    head.next = head.next.next
+                else:
+                    head.nextNodeWidth -= 1
+                head = head.nextLevel
+                
+    def search(self, data):
+        if self.isEmpty():
+            return None
+        head = self.head
+        while head:
+            while head.next and head.next.value < data:
+                head = head.next
+            if head.next and head.next.value == data:
+                return head.next
+            head = head.nextLevel
+        return None
+
+    def update(self, oldData, newData):
+        self.remove(oldData)
+        self.insert(newData)
             
     def getIndexOfNode(self, node):
         if node == None:
@@ -142,6 +182,25 @@ if __name__ == "__main__":
     s = SkipList()
     for i in range(10):
         s.insert(random.randint(-20, 20))
+        
+    s.insert(300)
+    s.insert(0)
+    s.insert(-300)
+    s.insert(1)
 
-    
     print(s)
+    print('--------------')
+    s.remove(300)
+    print(s)
+    print('--------------')
+    s.remove(0)
+    print(s)
+    print('--------------')
+    s.remove(-300)
+    print(s)
+    print(s.search(1))
+    print(s.search(707))
+    s.update(1, 707)
+    print(s)
+    print(s.search(40))
+    print(s.search(707))

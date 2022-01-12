@@ -9,7 +9,7 @@ class SkipListNode:
         self.nexts[level] = node
         
     def __str__(self):
-        return self.value
+        return str(self.value)
     
     def __repr__(self):
         return self.__str__()
