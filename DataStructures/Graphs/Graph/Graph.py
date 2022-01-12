@@ -8,7 +8,7 @@ class Graph:
         self.edges = []
 
     def adjacent(self, nodeA, nodeB):
-        return any(nodeA in e.getNodes() and nodeB in e.getNodes() for e in self.edges)
+        return any(nodeA in e.getNodes() and nodeB in e.getNodes() if e.directional else nodeA == e.getNodes()[0] and nodeB == e.getNodes()[1] for e in self.edges)
 
     def neighbors(self, node):
         neighbors = []
@@ -30,7 +30,7 @@ class Graph:
         self.edges = list(filter(lambda e: node not in e.getNodes(), self.edges))
 
     def addEdge(self, nodeA, nodeB, directional=False):
-        self.edges.append(GraphEdge(nodeA, nodeB, directional))
+        self.edges.append(GraphEdge(nodeA, nodeB, directional=directional))
 
     def removeEdge(self, nodeA, nodeB, directional=False):
         if not directional:
@@ -70,3 +70,11 @@ if __name__ == "__main__":
     print(graph.nodes)
 
     print(graph.neighbors(b))
+    
+    g2 = Graph()
+    g2.addNode(a)
+    g2.addNode(b)
+    g2.addEdge(a, b, True)
+    print(g2.adjacent(a,b))
+    print(g2.adjacent(b,a))
+    
