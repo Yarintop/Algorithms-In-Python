@@ -3,10 +3,13 @@ import random
 
 class DoublyLinkedList:
     def __init__(self, head=None) -> None:
-        if isinstance(head, DoublyLinkedListNode):
-            self.head = head
+        if head:
+            if isinstance(head, DoublyLinkedListNode):
+                self.head = head
+            else:
+                self.head = DoublyLinkedListNode(head)
         else:
-            self.head = DoublyLinkedListNode(head)
+            self.head = None
             
     def isEmpty(self) -> bool:
         """Checks if linked list is empty.
@@ -153,11 +156,11 @@ class DoublyLinkedList:
             IndexError: Index is out of range.
 
         Returns:
-            LinkedListNode: The node we want
+            SinglyLinkedListNode: The node we want
             
             (Or, in case index is a Slice)
             
-            List (LinkedListNodes): An array of LinkedListNodes according to the slice.
+            List (LinkedListNodes): An array of SinglyLinkedListNodes according to the slice.
         """
         if isinstance(index, slice):
             return [self[i].value for i in range(*index.indices(len(self)))]

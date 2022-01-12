@@ -1,12 +1,15 @@
-from LinkedListNode import LinkedListNode
+from DataStructures.LinkedList.SinglyLinkedList.SinglyLinkedListNode import SinglyLinkedListNode
 import random
 
-class LinkedList:
+class SinglyLinkedList:
     def __init__(self, head=None) -> None:
-        if isinstance(head, LinkedListNode):
-            self.head = head
+        if head:
+            if isinstance(head, SinglyLinkedListNode):
+                self.head = head
+            else:
+                self.head = SinglyLinkedListNode(head)
         else:
-            self.head = LinkedListNode(head)
+            self.head = None
         
     def isEmpty(self):
         """Checks if linked list is empty.
@@ -22,12 +25,12 @@ class LinkedList:
         """Pushes a node to the start of the linked list (it's the new head).
 
         Args:
-            node (LinkedListNode): The node we want to insert.
+            node (SinglyLinkedListNode): The node we want to insert.
         """
-        if isinstance(data, LinkedListNode):
+        if isinstance(data, SinglyLinkedListNode):
             node = data
         else:
-            node = LinkedListNode(data)
+            node = SinglyLinkedListNode(data)
         node.next = self.head
         self.head = node
         
@@ -35,16 +38,16 @@ class LinkedList:
         """Inserts a node to the wanted index of the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to insert.
+            node (SinglyLinkedListNode): The node we want to insert.
             index (Int): The index we want to insert "node" to
 
         Raises:
             IndexError: Index is out of bounds.
         """
-        if isinstance(data, LinkedListNode):
+        if isinstance(data, SinglyLinkedListNode):
             node = data
         else:
-            node = LinkedListNode(data)
+            node = SinglyLinkedListNode(data)
         if index == 0:
             self.push(data)
         else:
@@ -60,12 +63,12 @@ class LinkedList:
         """Inserts a node as the last element of the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to insert.
+            node (SinglyLinkedListNode): The node we want to insert.
         """
-        if isinstance(data, LinkedListNode):
+        if isinstance(data, SinglyLinkedListNode):
             node = data
         else:
-            node = LinkedListNode(data)
+            node = SinglyLinkedListNode(data)
         if self.isEmpty():
             self.head = node
         else:
@@ -83,7 +86,7 @@ class LinkedList:
         """Removes the first occurence of a node in the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to remove.
+            node (SinglyLinkedListNode): The node we want to remove.
 
         Raises:
             ValueError: node is not in the linked list.
@@ -106,7 +109,7 @@ class LinkedList:
         """Removes a node in the "index" position in the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to remove.
+            node (SinglyLinkedListNode): The node we want to remove.
 
         Raises:
             IndexError: Index is out of bounds.
@@ -131,7 +134,7 @@ class LinkedList:
         """Returns the index of the first occurence of node in the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to find.
+            node (SinglyLinkedListNode): The node we want to find.
 
         Returns:
             Int: Index of "node", -1 if node is not in the linked list.
@@ -156,11 +159,11 @@ class LinkedList:
             IndexError: Index is out of range.
 
         Returns:
-            LinkedListNode: The node we want
+            SinglyLinkedListNode: The node we want
             
             (Or, in case index is a Slice)
             
-            List (LinkedListNodes): An array of LinkedListNodes according to the slice.
+            List (SinglyLinkedListNodes): An array of SinglyLinkedListNodes according to the slice.
         """
         if isinstance(index, slice):
             return [self[ii].value for ii in range(*index.indices(len(self)))]
@@ -179,7 +182,7 @@ class LinkedList:
         """Checks if the linked list contains a loop.
 
         Returns:
-            LinkedListNode: Returns a node inside the loop. If there's no loop, returns False.
+            SinglyLinkedListNode: Returns a node inside the loop. If there's no loop, returns False.
         """
         if self.isEmpty():
             return False
@@ -270,7 +273,7 @@ if __name__ == "__main__":
     
     print("Initialize linked")
     
-    linked = LinkedList(123)
+    linked = SinglyLinkedList(123)
     for i in range(10):
         linked.append(random.randint(-20, 20))
     print(linked)
@@ -310,13 +313,13 @@ if __name__ == "__main__":
     print(linked.index(c))
     print(linked[2])
     
-    a = LinkedListNode(123)
-    b = LinkedListNode(20)
-    c = LinkedListNode(15)
-    d = LinkedListNode(76)
-    e = LinkedListNode(82)
+    a = SinglyLinkedListNode(123)
+    b = SinglyLinkedListNode(20)
+    c = SinglyLinkedListNode(15)
+    d = SinglyLinkedListNode(76)
+    e = SinglyLinkedListNode(82)
     
-    linked2 = LinkedList(a)
+    linked2 = SinglyLinkedList(a)
     linked2.append(b)
     linked2.append(c)
     linked2.append(d)

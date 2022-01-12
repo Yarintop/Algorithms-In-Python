@@ -1,5 +1,5 @@
-from GraphEdge import GraphEdge
-from GraphNode import GraphNode
+from DataStructures.Graphs.Graph.GraphNode import GraphNode
+from DataStructures.Graphs.Graph.GraphEdge import GraphEdge
 
 
 class Graph:

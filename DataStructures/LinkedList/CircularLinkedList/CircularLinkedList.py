@@ -26,7 +26,7 @@ class CircularLinkedList:
         """Pushes a node to the start of the linked list (it's the new head).
 
         Args:
-            node (LinkedListNode): The node we want to insert.
+            node (SinglyLinkedListNode): The node we want to insert.
         """
         if isinstance(data, CircularLinkedListNode):
             node = data
@@ -43,7 +43,7 @@ class CircularLinkedList:
         """Inserts a node to the wanted index of the linked list.
 
         Args:
-            node (LinkedListNode): The node we want to insert.
+            node (SinglyLinkedListNode): The node we want to insert.
             index (Int): The index we want to insert "node" to
         """
         if isinstance(data, CircularLinkedListNode):
@@ -166,11 +166,11 @@ class CircularLinkedList:
             IndexError: Index is out of range.
 
         Returns:
-            LinkedListNode: The node we want
+            SinglyLinkedListNode: The node we want
             
             (Or, in case index is a Slice)
             
-            List (LinkedListNodes): An array of LinkedListNodes according to the slice.
+            List (LinkedListNodes): An array of SinglyLinkedListNodes according to the slice.
         """
         if isinstance(index, slice):
             return [self[i].value for i in range(*index.indices(len(self)))]
