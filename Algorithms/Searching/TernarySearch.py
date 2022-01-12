@@ -4,6 +4,25 @@ import random
 class TernarySearch:
     @staticmethod
     def ternarySearch(arr, x, l=0, r=None):
+        """
+        This algorithm is similar to Binary Search in that it divides the array.
+        But in Ternary Search we're dividing the array to three parts instead of 2.
+        Binary Search is generally faster than Ternary Search,
+        This happens because of the increase in the number of comparisons in Ternary search.
+        In simple words, the reduction in the number of iterations in Ternary search is not able to compensate for the increase in comparisons.
+
+        Args:
+            arr ((Comparable) Object Array): A sorted array containing comparable objects.
+            x (Wanted Elemenet): An object the can be compared with arr's elements.
+            l (int, optional): The left "wall" we searching x between. Defaults to 0.
+            r (int, optional): The right "wall" we searching x between. Defaults to len(arr) - 1.
+
+        Returns:
+            int: x's index if found, else -1.
+            
+        Time Complexity:
+            Worst-Case: O(Log3(n))
+        """
         if r == None:
             r = len(arr) - 1
         if l <= r:
