@@ -23,9 +23,9 @@ class SkipList:
                 
                 tempNewHead = newHeadLevel
                 tempHead = tempHead.nextLevel
-            newHead.nextNodeWidth = 1
+            newHead.nextNodeWidth = len(self)
             self.head = newHead
-        else: #TODO add nextNodeWidth while adding in middle of list.
+        else:
             levelNodes = []
             currNode = self.head
             while True:
@@ -41,6 +41,7 @@ class SkipList:
             else:
                 newNode.next = currNode.next
                 currNode.next = newNode
+            newNode.nextNodeWidth = 1
             self.randomizeLevel(levelNodes, newNode)
                 
     def randomizeLevel(self, levelNodes, lowerLevelNode):
@@ -54,36 +55,74 @@ class SkipList:
                 
                 newNode.nextLevel = lowerLevelNode
                 lowerLevelNode = newNode
+                
+                lastNodeIndex = self.getIndexOfNode(lastNode)
+                newNodeIndex = self.getIndexOfNode(newNode)
+                nextNodeIndex = self.getIndexOfNode(newNode.next)
+                
+                lastNode.nextNodeWidth = newNodeIndex - lastNodeIndex
+                newNode.nextNodeWidth = nextNodeIndex - newNodeIndex
+                
             else:
                 break
+            
         if len(levelNodes) == 0:
             newHead = SkipListNode(self.head.value)
             newHead.nextLevel = self.head
+            newHead.nextNodeWidth = len(self)
             self.head = newHead
+        
+        while len(levelNodes) > 0:
+            lastNode = levelNodes.pop(0)
+            lastNode.nextNodeWidth += 1
+            
+    # def remove(self, data):
+    #     if self.isEmpty():
+    #         return
+    #     #TODO
+            
+    def getIndexOfNode(self, node):
+        if node == None:
+            return len(self)
+        head = self.head
+        while node.nextLevel or head.nextLevel:
+            if node.nextLevel:
+                node = node.nextLevel
+            if head.nextLevel:
+                head = head.nextLevel
+        index = 0
+        while head != node:
+            if head == None:
+                raise ValueError("The node is not in the list.")
+            index += 1
+            head = head.next
+        return index
     
     def __str__(self):
         head = self.head
         nodes = []
-        i = 0
         while head:
-            nodes.append([])
+            nodes.insert(0, [])
             node = head
             while node:
-                for j in range(i):
-                    nodes[j].insert(nodes[j].index('None'), None)
-                nodes[i].append(node.value)
+                nodes[0].append(node)
                 node = node.next
-            nodes[i].append('None')
-            i += 1
             head = head.nextLevel
         res = ''
-        for level in nodes:
+        for n in nodes[0]:
+            res += f'{n.value} -> '
+        res = res[:-4] + ' -> None'
+        for level in nodes[1:]:
+            i = 0
+            tempRes = ''
             for n in level:
-                if n == None:
-                    res = res[:-2] + f'--------'
-                else:
-                    res += f'{str(n)} -> '
-            res = res[:-4] + '\n'
+                tempRes += f'{n.value} '
+                for j in range(1, n.nextNodeWidth):
+                    tempRes += '-' * (4 + len(str(nodes[0][i + j].value)))
+                i += n.nextNodeWidth
+                tempRes += '-> '
+            tempRes = tempRes[:-4] + ' -> None\n'
+            res = tempRes + res
             
         return res
     
@@ -101,11 +140,8 @@ class SkipList:
                 
 if __name__ == "__main__":
     s = SkipList()
-    test = [-20, -16, -6, -3, -2, 5, 12, 18, -8, 19]
-    for t in test:
-        s.insert(t)
-    # for i in range(10):
-    #     s.insert(random.randint(-20, 20))
+    for i in range(10):
+        s.insert(random.randint(-20, 20))
 
     
     print(s)
