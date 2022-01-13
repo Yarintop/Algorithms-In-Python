@@ -1,8 +1,16 @@
 from DataStructures.Trees.Trie.TrieNode import TrieNode
 
+ALPHABET_LENGTH = 95
+
 class Trie:
     def __init__(self) -> None:
-        self.root = TrieNode(None)
+        self.root = TrieNode(None, ALPHABET_LENGTH)
+        
+    def isEmpty(self):
+        return self.root.children == [None] * ALPHABET_LENGTH
+    
+    def _isNodeEmpty(self, node):
+        return node.children == [None] * ALPHABET_LENGTH
 
     def _translateCharToIndex(self, char):
         return ord(char) - ord(' ')
@@ -37,6 +45,27 @@ class Trie:
                     "Character is not valid, Please only choose characters from 32 (ASCII) to 126 (ASCII) Inclusive")
 
         return currNode.isEndOfWord
+    
+    def remove(self, string, currNode=None, depth = 0):
+        if currNode == None:
+            currNode = self.root
+            
+        if depth == len(string):
+            if currNode.isEndOfWord:
+                currNode.isEndOfWord = False
+                
+            if self._isNodeEmpty(currNode):
+                return None
+            
+            return currNode
+        
+        index = self._translateCharToIndex(string[depth])
+        currNode.children[index] = self.remove(string, currNode.children[index], depth + 1)
+        
+        if self._isNodeEmpty(currNode):
+            return None
+        
+        return currNode
 
 
 if __name__ == "__main__":
@@ -59,4 +88,11 @@ if __name__ == "__main__":
     print(f'"quic" -> {trie.search("quic")}')
     print(f'"Th" -> {trie.search("Th")}')
     print(f'"vcx" -> {trie.search("vcx")}')
-        
+    
+    trie.remove('quic')
+    print(f'"quic" -> {trie.search("quic")}')
+    
+    trie.remove('Th')
+    print(f'"The" -> {trie.search("The")}')
+    print(f'"Th" -> {trie.search("Th")}')
+
