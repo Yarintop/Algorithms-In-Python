@@ -59,10 +59,8 @@ class SegmentTree:
 
 if __name__ == "__main__":
     arr = []
-    # for i in range(10):
-    #     arr.append(random.randint(-20, 20))
     for i in range(10):
-        arr.append(-1)
+        arr.append(random.randint(-20, 20))
     tree1 = SegmentTree(arr=arr)
     tree2 = SegmentTree()
     
