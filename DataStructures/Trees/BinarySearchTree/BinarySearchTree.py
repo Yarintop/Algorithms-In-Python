@@ -50,6 +50,11 @@ class BinarySearchTree:
         elif data > root.value:
             root.right = self.remove(data, root.right)
         else:
+            if not root.left and not root.right: # root is a leaf.
+                if self.root.value == data:
+                    self.root = None
+                    return self.root
+                return None
             if not root.left:
                 return root.right
             elif not root.right:
@@ -79,6 +84,8 @@ class BinarySearchTree:
             return self.search(data, node.right)
         
     def __str__(self):
+        if self.isEmpty():
+            return "Tree is Empty."
         s = []
         q = [self.root]
         while len(q):
@@ -105,5 +112,11 @@ if __name__ == "__main__":
     print(n)
     
     binaryTree.remove(123)
+    
     print(binaryTree)
+    
+    b = BinarySearchTree(5)
+    print(b)
+    b.remove(5)
+    print(b)
     
