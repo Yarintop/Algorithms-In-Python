@@ -1,4 +1,4 @@
-from BinarySearchTreeNode import BinarySearchTreeNode
+from DataStructures.Trees.BinarySearchTree.BinarySearchTreeNode import BinarySearchTreeNode
 import random
 
 class BinarySearchTree:
@@ -51,13 +51,17 @@ class BinarySearchTree:
             root.right = self.remove(data, root.right)
         else:
             if not root.left and not root.right: # root is a leaf.
-                if self.root.value == data:
+                if self.root == root:
                     self.root = None
                     return self.root
                 return None
             if not root.left:
+                if self.root == root:
+                    self.root = root.right
                 return root.right
             elif not root.right:
+                if self.root == root:
+                    self.root = root.left
                 return root.left
             
             temp = root.right
@@ -72,16 +76,20 @@ class BinarySearchTree:
     def search(self, data, node=None):
         if node == None:
             if self.isEmpty():
-                return -1
+                return None
             node = self.root
         
         if node.value == data:
             return node
         
         if node.value > data:
-            return self.search(data, node.left)
+            if node.left:
+                return self.search(data, node.left)
+            return None
         else:
-            return self.search(data, node.right)
+            if node.right:
+                return self.search(data, node.right)
+            return None
         
     def __str__(self):
         if self.isEmpty():

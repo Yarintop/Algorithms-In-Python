@@ -16,7 +16,7 @@ class AVLTree:
         if root == None:
             root =  self.root
             
-        if data < root.value:
+        if data <= root.value:
             if root.left:
                 root.left = self.insert(data, root.left)
             else:
@@ -31,7 +31,7 @@ class AVLTree:
         rightHeight = self.getHeight(root.right)
         
         root.height = 1 + max(leftHeight, rightHeight)
-        balance = leftHeight - rightHeight
+        balance = self.getBalance(root)
         
         if balance > 1:
             if data <= root.left.value:
@@ -43,7 +43,7 @@ class AVLTree:
             if data > root.right.value:
                 return self.leftRotate(root)
             else:
-                root.right = self.right(root.right)
+                root.right = self.rightRotate(root.right)
                 return self.leftRotate(root)
             
         return root
@@ -92,19 +92,19 @@ class AVLTree:
         rightHeight = self.getHeight(root.right)
         
         root.height = 1 + max(leftHeight, rightHeight)
-        balance = leftHeight - rightHeight
+        balance = self.getBalance(root)
         
         if balance > 1:
-            if data <= root.left.value:
+            if self.getBalance(root.left) >= 0:
                 return self.rightRotate(root)
             else:
                 root.left = self.leftRotate(root.left)
                 return self.rightRotate(root)
         elif balance < -1:
-            if data > root.right.value:
+            if self.getBalance(root.right) <= 0:
                 return self.leftRotate(root)
             else:
-                root.right = self.right(root.right)
+                root.right = self.rightRotate(root.right)
                 return self.leftRotate(root)
             
         return root
@@ -136,19 +136,31 @@ class AVLTree:
         
         if self.root == node:
             self.root = leftNode
-        
+            
+            
         return leftNode
+    
+    def getBalance(self, node):
+        if node == None:
+            return 0
+        return self.getHeight(node.left) - self.getHeight(node.right)
     
     def getHeight(self, node):
         if node == None:
             return 0
         
         return node.height
+    
+    def removeNode(self, node):
+        if node.count > 0:
+            node.count -=1
+            return node
+        return None
             
     def search(self, data, node=None):
         if node == None:
             if self.isEmpty():
-                return -1
+                return None
             node = self.root
         
         if node.value == data:
@@ -157,11 +169,11 @@ class AVLTree:
         if node.value > data:
             if node.left:
                 return self.search(data, node.left)
-            return -1
+            return None
         else:
             if node.right:
                 return self.search(data, node.right)
-            return -1
+            return None
         
     def __str__(self):
         if self.isEmpty():
@@ -180,23 +192,17 @@ class AVLTree:
     
 if __name__ == "__main__":
     avlTree = AVLTree()
-    avlTree.insert(1)
-    avlTree.insert(2)
-    avlTree.insert(3)
-    avlTree.insert(4)
-    avlTree.insert(5)
-    avlTree.insert(6)
-    avlTree.insert(7)
+    arr = []
     
-    print(avlTree)
+    for i in range(20):
+        arr.append(random.randint(-100, 100))
+        
+    for a in arr:
+        avlTree.insert(a)
     
-    n = avlTree.search(765)
-    
-    print(n)
-    
-    avlTree.remove(5)
-    avlTree.remove(6)
-    avlTree.remove(7)
+    avlTree.remove(arr[0])
+    avlTree.remove(arr[19])
+    avlTree.remove(arr[10])
     
     print(avlTree)
     

@@ -1,8 +1,8 @@
-from BinaryTreeNode import BinaryTreeNode
+from DataStructures.Trees.BinaryTree.BinaryTreeNode import BinaryTreeNode
 import random
 
 class BinaryTree:
-    def __init__(self, root) -> None:
+    def __init__(self, root=None) -> None:
         if isinstance(root, BinaryTreeNode):
             self.root = root
         else:
@@ -73,39 +73,39 @@ class BinaryTree:
         def left():
             if node.left:
                 l = self.search(data, node.left, order, parent)
-                if l != -1:
+                if l != None:
                     if parent and isinstance(l, BinaryTreeNode):
                         return l + [node]
                     return l
-            return -1
+            return None
                 
         def middle():
             if node.value == data:
                 if parent:
                     return [node]
                 return node
-            return -1
+            return None
             
         def right():
             if node.right:
                 r = self.search(data, node.right, order, parent)
-                if r != -1:
+                if r != None:
                     if parent and isinstance(r, BinaryTreeNode):
                         return r + [node]
                     return r
-            return -1
+            return None
         
         def functionOrder(first, second, third):
             f = first()
-            if f != -1:
+            if f != None:
                 return f
             s = second()
-            if s != -1:
+            if s != None:
                 return s
             t = third()
-            if t != -1:
+            if t != None:
                 return t
-            return -1
+            return None
                 
         if order == -1:
             return functionOrder(middle, left, right)

@@ -4,6 +4,7 @@ class AVLTreeNode:
         self.left = left
         self.right = right
         self.height = height
+        self.count = 1
         
     def __str__(self):
         return str(self.value)
