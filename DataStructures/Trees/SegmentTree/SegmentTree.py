@@ -46,13 +46,15 @@ class SegmentTree:
         return diff 
 
     def getSum(self, minRange, maxRange, currNode=None):
+        if minRange < 0 or maxRange < 0 or minRange >= self.maxSize or maxRange >= self.maxSize:
+            return None
         if currNode == None:
             currNode = self.head
 
-        if minRange >= currNode.minRange and maxRange <= currNode.maxRange:
+        if currNode.minRange >= minRange and currNode.maxRange <= maxRange:
             return currNode.sum
 
-        if minRange < currNode.minRage or maxRange > currNode.maxRange:
+        if currNode.minRange > maxRange or currNode.maxRange < minRange:
             return 0
 
         return self.getSum(minRange, maxRange, currNode.left) + self.getSum(minRange, maxRange, currNode.right)

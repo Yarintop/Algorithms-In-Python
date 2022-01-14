@@ -1,4 +1,4 @@
-from StackNode import StackNode
+from DataStructures.Stack.StackNode import StackNode
 import random
 
 class Stack:

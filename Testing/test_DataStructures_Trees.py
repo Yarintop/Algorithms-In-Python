@@ -44,8 +44,12 @@ class TestSearching(unittest.TestCase):
             
         self.segmentTree = SegmentTree(arr=self.arr)
         self.trie = Trie()
-        for w in self.text:
+        for w in self.text.strip().replace('\n', '').split():
             self.trie.insert(w)
+        
+    # Binary Tree
+    # Binary Search Tree
+    # AVL Tree
         
     def test_search_success(self):
         # Binary Tree
@@ -74,7 +78,6 @@ class TestSearching(unittest.TestCase):
         self.assertEqual(self.avlTree.search(300), None, "test_search_failure, AVL Tree, arr[0]")
         
     def test_remove_success(self):
-        
         countA = self.arr.count(self.arr[0])
         countB = self.arr.count(self.arr[19])
         countC = self.arr.count(self.arr[10])
@@ -122,4 +125,37 @@ class TestSearching(unittest.TestCase):
         self.assertEqual(self.avlTree.search(self.arr[0]), None, f"test_search_success, AVL Tree, arr[0], {self.arr}")
         self.assertEqual(self.avlTree.search(self.arr[19]), None, f"test_search_success, AVL Tree, arr[19], {self.arr}")
         self.assertEqual(self.avlTree.search(self.arr[10]), None, f"test_search_success, AVL Tree, arr[10], {self.arr}")
+        
+    # Segment Tree
+        
+    def test_check_valid_sum(self):
+        minRange = random.randint(0, len(self.arr) - 1)
+        maxRange = random.randint(minRange, len(self.arr) - 1)
+        self.assertEqual(self.segmentTree.getSum(minRange, maxRange), sum(self.arr[minRange: maxRange + 1]))
+        
+    def test_check_invalid_sum(self):
+        minRange = -1
+        maxRange = 5
+        self.assertEqual(self.segmentTree.getSum(minRange, maxRange), None)
+        
+        minRange = -1
+        maxRange = 100
+        self.assertEqual(self.segmentTree.getSum(minRange, maxRange), None)
+        
+        minRange = 1
+        maxRange = 100
+        self.assertEqual(self.segmentTree.getSum(minRange, maxRange), None)
+        
+    # Trie
+        
+    def test_valid_words(self):
+        self.assertEqual(self.trie.search("According"), True)
+        self.assertEqual(self.trie.search("bee"), True)
+        self.assertEqual(self.trie.search("impossible."), True)
+        
+    def test_invalid_words(self):
+        self.assertEqual(self.trie.search("zxcasd"), False)
+        self.assertEqual(self.trie.search("Bee"), False)
+        self.assertEqual(self.trie.search("mpossible."), False)
+        
         
