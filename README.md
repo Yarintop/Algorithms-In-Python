@@ -32,11 +32,13 @@ I've used various sources which are credited in each section, but I've mainly us
   * `Mathematical`
     * GCD
     * LCM
+    * Prime Factors
+    * Sieve Of Sundaram
+    * Smith Numbers
   * `Graph Algorithms`
     * BFS
     * DFS
     * Topological Sorting
-
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List
