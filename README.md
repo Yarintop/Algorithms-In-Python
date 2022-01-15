@@ -35,6 +35,7 @@ I've used various sources which are credited in each section, but I've mainly us
     * Prime Factors
     * Sieve Of Sundaram
     * Smith Numbers
+    * Sphenic Numbers
   * `Graph Algorithms`
     * BFS
     * DFS
