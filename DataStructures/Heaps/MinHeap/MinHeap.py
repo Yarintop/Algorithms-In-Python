@@ -5,7 +5,7 @@ class MinHeap:
             self.heap.append(root)
     
     def isEmpty(self):
-        return len(self) > 0
+        return len(self) == 0
     
     def parent(self, pos):
         return pos // 2
@@ -71,8 +71,6 @@ class MinHeap:
         newHeap = self.heap
         self.heap = currHeap
         return newHeap
-    
-
             
     def __str__(self):
         return str(self.heap)

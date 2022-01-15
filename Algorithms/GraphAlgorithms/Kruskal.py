@@ -1,7 +1,9 @@
 from DataStructures.Graphs.Graph.Graph import Graph
+from DataStructures.Queues.PriorityQueue.PriorityQueue import PriorityQueue
 
 from copy import deepcopy
 import random
+
 
 class Kruskal:
     @staticmethod
@@ -13,7 +15,7 @@ class Kruskal:
                 for a weighted, connected, undirected graph is a spanning tree with a weight less than or equal to the weight of every other spanning tree.
                 The weight of a spanning tree is the sum of weights given to each edge of the spanning tree.
                 
-                It's a greedy algorithm in which we take the edge with the lowest weight, and try to add it to our MST, if it creates a cycle,
+                Kruskal's algorithms is a greedy algorithm in which we take the edge with the lowest weight, and try to add it to our MST, if it creates a cycle,
                 then it's invalid and therefore shall be skipped to the next edge. Because we have n nodes, we need n - 1 edges to connect every single node.
 
         Args:
@@ -28,13 +30,15 @@ class Kruskal:
             minimumSpanTree.addNode(n)
         numOfNodes = len(nodes)
         nodes = [[x] for x in nodes]
-        edges: list = deepcopy(graph.edges)
-        edges.sort()
+        edges = PriorityQueue()
+        for e in deepcopy(graph.edges):
+            edges.push(e)
         
         newEdges = []
-        for e in edges:
+        while len(edges) > 0:
             if len(newEdges) == numOfNodes - 1:
                 break
+            e = edges.get()
             nodeA = e.start
             nodeB = e.end
             if not Kruskal.sameGraph(nodes, nodeA, nodeB):
@@ -51,7 +55,7 @@ class Kruskal:
                 nodes.remove(groupB)
         
         for e in newEdges:
-            minimumSpanTree.addEdge(e.start, e.end, weight=e.weight, directional=e.directional)
+            minimumSpanTree.addEdge(e.start, e.end, weight=e.weight)
             
         return minimumSpanTree
         

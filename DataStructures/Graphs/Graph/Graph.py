@@ -8,7 +8,7 @@ class Graph:
         self.edges = []
 
     def adjacent(self, nodeA, nodeB):
-        return any(nodeA in e.getNodes() and nodeB in e.getNodes() if e.directional else nodeA == e.getNodes()[0] and nodeB == e.getNodes()[1] for e in self.edges)
+        return any(nodeA == e.start and nodeB == e.end for e in self.edges)
 
     def neighbors(self, node):
         neighbors = []
@@ -16,8 +16,6 @@ class Graph:
         for e in nodeEdges:
             if node == e.start:
                 neighbors.append(e.end)
-            elif not e.directional:
-                neighbors.append(e.start)
                 
         return list(set(neighbors))
     
@@ -31,20 +29,20 @@ class Graph:
         self.edges = list(filter(lambda e: node not in e.getNodes(), self.edges))
 
     def addEdge(self, nodeA, nodeB, weight=-1, directional=False):
-        self.edges.append(GraphEdge(nodeA, nodeB, weight=weight, directional=directional))
+        self.edges = [edge for edge in self.edges if edge.start != nodeA or edge.end != nodeB]
+        self.edges.append(GraphEdge(nodeA, nodeB, weight=weight))
+        if not directional:
+            self.edges = [edge for edge in self.edges if edge.start != nodeB or edge.end != nodeA]
+            self.edges.append(GraphEdge(nodeB, nodeA, weight=weight))
         
     def getEdges(self, node):
-        res = []
-        for e in self.edges:
-            if e.start == node or (not e.directional and e.end == node):
-                res.append(e)
-        return res
+        return [e for e in self.edges if e.start == node]
 
     def removeEdge(self, nodeA, nodeB, directional=False):
         if not directional:
-            filterFunction = lambda e: nodeA not in e and nodeB not in e
+            filterFunction = lambda e: not (nodeA in e.getNodes() and nodeB in e.getNodes())
         else:
-            filterFunction = lambda e: e[0] != nodeA and e[1] != nodeB
+            filterFunction = lambda e: e.start != nodeA and e.end != nodeB
         self.edges = list(filter(filterFunction, self.edges))
         
 
@@ -78,6 +76,10 @@ if __name__ == "__main__":
     print(graph.nodes)
 
     print(graph.neighbors(b))
+    
+    graph.removeEdge(b, d)
+    
+    print(graph.nodes)
     
     g2 = Graph()
     g2.addNode(a)

@@ -19,9 +19,9 @@ class TopologicalSorting:
             v = s.pop(0)
             l.append(v)
             for n in graph.neighbors(v):
-                edges = [e for e in edges if (v, n) != e.getNodes()]
-                if not any(n == e.getNodes()[1] for e in edges):
-                    s.append(n)
+                edges = [e for e in edges if (v, n['node']) != e.getNodes()]
+                if not any(n['node'] == e.getNodes()[1] for e in edges):
+                    s.append(n['node'])
         
         if len(edges) > 0:
             raise ValueError("Graph has at least one cycle.")

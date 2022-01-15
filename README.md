@@ -42,6 +42,7 @@ I've used various sources which are credited in each section, but I've mainly us
     * Topological Sorting
     * Kruskal's
     * Prim's
+    * Dijkstra's Algorithm
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List

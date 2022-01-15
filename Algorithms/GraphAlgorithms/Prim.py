@@ -1,4 +1,5 @@
 from DataStructures.Graphs.Graph.Graph import Graph
+from DataStructures.Queues.PriorityQueue.PriorityQueue import PriorityQueue
 
 from copy import deepcopy
 import random
@@ -26,14 +27,17 @@ class Prim:
         numOfNodes = len(graph.nodes)
         if numOfNodes == 0:
             return minimumSpanTree
+        
         nodes = [graph.nodes[0]]
-        edgesQueue = graph.getEdges(nodes[0]) # TODO: change list to priority queue.
         MSTEdges = []
+        edgesQueue = PriorityQueue()
+        for e in graph.getEdges(nodes[0]):
+            edgesQueue.push(e)
+            
         while len(nodes) < len(graph.nodes):
             if len(edgesQueue) == 0:
                 raise ValueError("Tree must be connected.")
-            edgesQueue.sort()
-            e = edgesQueue.pop(0)
+            e = edgesQueue.get()
             MSTEdges.append(e)
             nodeA, nodeB = e.getNodes()
             if nodeA in nodes:
@@ -45,13 +49,14 @@ class Prim:
                 if not any(x in nodes for x in edge.getNodes()):
                     newEdges.append(edge)
             nodes.append(targetNode)
-            edgesQueue += newEdges
+            for newEdge in newEdges:
+                edgesQueue.push(newEdge)
         
         for n in nodes:
             minimumSpanTree.addNode(n)
             
         for e in MSTEdges:
-            minimumSpanTree.addEdge(e.start, e.end, e.weight, e.directional)
+            minimumSpanTree.addEdge(e.start, e.end, e.weight)
             
         return minimumSpanTree
     
