@@ -36,6 +36,7 @@ I've used various sources which are credited in each section, but I've mainly us
     * BFS
     * DFS
     * Topological Sorting
+
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List
