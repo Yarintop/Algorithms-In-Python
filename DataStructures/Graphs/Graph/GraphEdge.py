@@ -7,3 +7,10 @@ class GraphEdge:
         
     def getNodes(self):
         return (self.start, self.end)
+    
+    def __lt__(self, other):
+        if other == None:
+            return self
+        if self.weight == -1:
+            return other
+        return self.weight < other.weight

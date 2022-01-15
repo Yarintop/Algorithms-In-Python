@@ -29,8 +29,8 @@ class Graph:
         self.nodes.remove(node)
         self.edges = list(filter(lambda e: node not in e.getNodes(), self.edges))
 
-    def addEdge(self, nodeA, nodeB, directional=False):
-        self.edges.append(GraphEdge(nodeA, nodeB, directional=directional))
+    def addEdge(self, nodeA, nodeB, weight=-1, directional=False):
+        self.edges.append(GraphEdge(nodeA, nodeB, weight=weight, directional=directional))
 
     def removeEdge(self, nodeA, nodeB, directional=False):
         if not directional:
