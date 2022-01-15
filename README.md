@@ -44,6 +44,8 @@ I've used various sources which are credited in each section, but I've mainly us
     * Prim's
     * Dijkstra's Algorithm
     * A*
+  * `Compression`
+    * Huffman Coding
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List
