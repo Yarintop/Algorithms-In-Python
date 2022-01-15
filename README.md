@@ -43,6 +43,7 @@ I've used various sources which are credited in each section, but I've mainly us
     * Kruskal's
     * Prim's
     * Dijkstra's Algorithm
+    * A*
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List
