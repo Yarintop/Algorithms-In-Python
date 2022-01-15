@@ -20,6 +20,7 @@ class Graph:
                 neighbors.append(e.start)
                 
         return list(set(neighbors))
+    
 
     def addNode(self, node):
         if node not in self.nodes:
@@ -31,6 +32,13 @@ class Graph:
 
     def addEdge(self, nodeA, nodeB, weight=-1, directional=False):
         self.edges.append(GraphEdge(nodeA, nodeB, weight=weight, directional=directional))
+        
+    def getEdges(self, node):
+        res = []
+        for e in self.edges:
+            if e.start == node or (not e.directional and e.end == node):
+                res.append(e)
+        return res
 
     def removeEdge(self, nodeA, nodeB, directional=False):
         if not directional:

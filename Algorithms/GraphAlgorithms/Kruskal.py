@@ -1,7 +1,7 @@
 from DataStructures.Graphs.Graph.Graph import Graph
 
-import random
 from copy import deepcopy
+import random
 
 class Kruskal:
     @staticmethod
@@ -9,7 +9,7 @@ class Kruskal:
         """
             Kruskal's Algorithm:
                 Given a connected and undirected graph, a spanning tree of that graph is a subgraph that is a tree and connects all the vertices together.
-                A single graph can have many different spanning trees.A minimum spanning tree (MST) or minimum weight spanning tree
+                A single graph can have many different spanning trees. A minimum spanning tree (MST) or minimum weight spanning tree
                 for a weighted, connected, undirected graph is a spanning tree with a weight less than or equal to the weight of every other spanning tree.
                 The weight of a spanning tree is the sum of weights given to each edge of the spanning tree.
                 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         g.addNode(i)
         
     for i in range(11):
-        for j in range(i, 11):
+        for j in range(i + 1, 11):
             g.addEdge(g.nodes[i], g.nodes[j], weight=random.randint(1, 100))
             
     MST = Kruskal.kruskal(g)
