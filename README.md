@@ -46,6 +46,8 @@ I've used various sources which are credited in each section, but I've mainly us
     * A*
   * `Compression`
     * Huffman Coding
+  * `Backtracking`
+    * The Knight's Tour
 * **`Data Structures`**
   * `Linked Lists`
     * Singly Linked List
