@@ -10,10 +10,14 @@ class TheKnightsTour:
             move (int, optional): The current move. Defaults to 0.
             currX (int, optional): The current x. Defaults to 0.
             currY (int, optional): The current y. Defaults to 0.
-            board ([type], optional): The current chess Board. Defaults to None.
+            board (list (list (int)), optional): The current chess Board. Defaults to None.
 
         Returns:
-            [type]: [description]
+            Bool: if found, print the board and return True. else print that there is no solution and return False.
+            
+        Time Complexity:
+            Worst-Case: O(8^(N^2)), this approach is not the best for The Knight's Tour as there is a better algorithm by Warnsdorff.
+                                    this is mostly and example of a Backtracking Algorithm
         """
         if move == 0:
             board = [[-1] * n for _ in range(n)]
@@ -43,6 +47,7 @@ class TheKnightsTour:
             for j in range(n):
                 print(board[i][j], end='\t')
             print()
+        return True
             
 if __name__ == "__main__":
     TheKnightsTour.theKnightsTour(8)
