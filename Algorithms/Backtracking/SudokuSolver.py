@@ -1,15 +1,57 @@
 import random
+import math
 
 class SudokuSolver:
     @staticmethod
     def sudokuSolver(base):
+        print("Generating a valid random Sudoku:")
         board = SudokuSolver.sudokuGenerator(base)
         SudokuSolver.printSudoku(board, base)
+        if SudokuSolver.sudokuSolverHelper(board, base ** 2):
+            print("The Sudoku has a solution:")
+            SudokuSolver.printSudoku(board, base)
+        else: # Shouldn't Get Here
+            print("The Sudoku doesn't have a solution.")
         
-    # @staticmethod
-    # def sudokuSolverHelper(board):
+    @staticmethod
+    def sudokuSolverHelper(board, side):
+        currCell = SudokuSolver.getNextFreeCell(board, side)
+        if not currCell:
+            return True
         
+        currR, currC = currCell
+        for i in range(1, side + 1):
+            if SudokuSolver.isValid(board, side, currR, currC, i):
+                board[currR][currC] = i
+                if SudokuSolver.sudokuSolverHelper(board, side):
+                    return True
+        board[currR][currC] = 0
+        return False
+    
+    @staticmethod
+    def isValid(board, side, currR, currC, number):
+        base = math.sqrt(side)
+        for i in range(side):
+            if board[currR][i] == number or board[i][currC] == number:
+                return False
+            
+        startRow = int((currR // base) * base)
+        startCol = int((currC // base) * base)
         
+        for i in range(startRow, startRow + 3):
+            for j in range(startCol, startCol + 3):
+                if board[i][j] == number:
+                    return False
+                
+        return True
+    
+    @staticmethod
+    def getNextFreeCell(board, side):
+        for row in range(side):
+            for column in range(side):
+                if board[row][column] == 0:
+                    return (row, column)
+        return False
 
     @staticmethod
     def sudokuGenerator(base=3):
