@@ -2,9 +2,14 @@ import random
 
 class SudokuSolver:
     @staticmethod
-    def sudokuSolver():
-        board = SudokuSolver.sudokuGenerator(3)
-        SudokuSolver.printSudoku(board)
+    def sudokuSolver(base):
+        board = SudokuSolver.sudokuGenerator(base)
+        SudokuSolver.printSudoku(board, base)
+        
+    # @staticmethod
+    # def sudokuSolverHelper(board):
+        
+        
 
     @staticmethod
     def sudokuGenerator(base=3):
@@ -79,9 +84,25 @@ class SudokuSolver:
         return board
     
     @staticmethod
-    def printSudoku(board):
-        for line in board:
-            print("[" + " ".join(f"{n or '.':{len(str(len(board)))}}" for n in line) + "]")
+    def printSudoku(board, base):
+        def expandLine(line):
+            return line[0]+line[5:9].join([line[1:5]*(base-1)]*base)+line[9:13]
+        side = base ** 2
+        line0  = expandLine("╔═══╤═══╦═══╗")
+        line1  = expandLine("║ . │ . ║ . ║")
+        line2  = expandLine("╟───┼───╫───╢")
+        line3  = expandLine("╠═══╪═══╬═══╣")
+        line4  = expandLine("╚═══╧═══╩═══╝")
+
+        symbol = " 123456789"
+        nums   = [ [""]+[symbol[n] for n in row] for row in board ]
+        print(line0)
+        for r in range(1,side+1):
+            print( "".join(n+s for n,s in zip(nums[r-1],line1.split("."))) )
+            print([line2,line3,line4][(r%side==0)+(r%base==0)])
+            
+        # for line in board:
+        #     print("[" + " ".join(f"{n or '.':{len(str(len(board)))}}" for n in line) + "]")
 
 if __name__ == "__main__":
-    SudokuSolver.sudokuSolver()
+    SudokuSolver.sudokuSolver(3)
